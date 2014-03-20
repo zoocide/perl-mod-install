@@ -39,6 +39,11 @@ $@ && install_online_cpanm();
 eval{ require lib::xi };
 $@ && install_with_cpanm('lib::xi');
 
+## install specified modules ##
+require lib::xi;
+lib::xi->import($install_dir);
+require modules_to_install;
+
 
 sub get_and_install_dist
 {
