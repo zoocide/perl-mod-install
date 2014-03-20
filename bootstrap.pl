@@ -12,22 +12,9 @@ my $perl = $^X;
 my $install_dir = $ARGV[0] ? rel2abs($ARGV[0]) : '';
 my $prefix      = $install_dir ? 'PREFIX='.$install_dir : '';
 
-if ($install_dir){
-  my @libs = map catfile($install_dir, $_), (catfile(qw(share perl5)), catfile(qw(lib perl5)));
-
-  my @perl5lib = !$ENV{PERL5LIB} ? () : split /:/, $ENV{PERL5LIB};
-  for my $lib (@libs){
-    ## add path to PERL5LIB ##
-    grep($_ eq $lib, @perl5lib) || push @perl5lib, $lib;
-
-    ## add path to @INC for dynamic linking ##
-    grep($_ eq $lib, @INC) || push @INC, $lib;
-  }
-  ## set PERL5LIB ##
-  $ENV{PERL5LIB} = join ':', @perl5lib;
-  ## set PATH ##
-  $ENV{PATH} = catfile($install_dir, 'bin').':'.$ENV{PATH};
-}
+## set environment variables ##
+require my_lib;
+my_lib->import($install_dir);
 
 #sub my_system{ print join( ' ', @_, "\n"); 0 }
 sub my_system{ system @_ }
@@ -49,7 +36,9 @@ eval{ require App::cpanminus };
 $@ && install_online_cpanm();
 
 ## install lib::xi ##
-install_with_cpanm('lib::xi');
+eval{ require lib::xi };
+$@ && install_with_cpanm('lib::xi');
+
 
 sub get_and_install_dist
 {
