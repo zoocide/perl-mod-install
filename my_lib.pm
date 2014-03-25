@@ -2,6 +2,20 @@ package my_lib;
 use Config;
 use File::Spec::Functions qw(catfile rel2abs);
 
+=head1 NAME
+
+  my_lib - sets environment variables to use local library.
+
+=head1 SYNOPSIS
+
+  ## add /.../local/library/share/perl5,
+  ##     /.../local/library/lib/perl5
+  ## to PERL5LIB and @INC;
+  ## add /.../local/library/bin to PATH
+  use my_lib 'local/library';
+
+=cut
+
 sub import
 {
   my $class = shift;
