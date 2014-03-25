@@ -6,6 +6,15 @@ use File::Spec::Functions qw(rel2abs catfile);
 use BasicTools;
 use constant windoze => $^O eq 'MSWin32';
 
+=head1 SYNOPSIS
+
+  # install all required modules to directory install_dir
+  bootstrap.pl install_dir
+
+  # in your script 'use my_lib 'install_dir';' to access installed modules.
+
+=cut
+
 my $perl = $^X;
 
 my $install_dir = $ARGV[0] ? rel2abs($ARGV[0]) : '';
