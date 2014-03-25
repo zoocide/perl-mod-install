@@ -3,6 +3,25 @@ use Config;
 use File::Spec::Functions qw(catfile rel2abs path);
 use constant windoze => $^O eq 'MSWin32';
 
+=head1 NAME
+
+  BasicTools - use tools for download files, extract archives, make makefiles, etc.
+
+=head1 SYNOPSIS
+
+  ## initialize tools ##
+  my $bt = BasicTools->new;
+  $bt->init_tools;
+
+  # download_dmake for windows
+  $bt->has_make || $bt->get_dmake;
+
+  ## use tools ##
+  my $file = $bt->download('http://search.cpan.org/CPAN/authors/id/S/SH/SHAY/dmake-4.12-20090907-SHAY.zip', 'dmake.zip');
+  $bt->extract($file);
+
+=cut
+
 # ($protocol, $server, $directory, $filename) = parse_url($url);
 sub parse_url
 {
