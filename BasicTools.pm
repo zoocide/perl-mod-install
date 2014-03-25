@@ -153,7 +153,7 @@ sub init_tools
     $self->{curl} = $cmd;
     $self->{get_http} = sub {
       my ($url, $fname) = @_;
-      my @opts = ('-o', $fname);
+      my @opts = ('-L', '-o', $fname);
       system($self->{curl}, @opts, $url) == 0 or die "can`t download '$url' with curl.\n";
       $fname
     };
