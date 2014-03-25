@@ -102,7 +102,7 @@ sub make
 {
   my $self = shift;
   $self->has_make || die "make command is not set.\n";
-  system($self->{make}, @args) == 0 || die "make faild\n";
+  system($self->{make}, @_) == 0 || die "make faild\n";
 }
 
 # my $full_path = $bt->which($cmd);
@@ -145,7 +145,7 @@ sub init_tools
     $self->{get_http} = sub {
       my ($url, $fname) = @_;
       my @opts = ('-O', $fname);
-      system($cmd, @opts, $url) == 0 or die "can`t download '$url' with wget.\n";
+      system($self->{wget}, @opts, $url) == 0 or die "can`t download '$url' with wget.\n";
       $fname
     };
   }
@@ -154,7 +154,7 @@ sub init_tools
     $self->{get_http} = sub {
       my ($url, $fname) = @_;
       my @opts = ('-o', $fname);
-      system($cmd, @opts, $url) == 0 or die "can`t download '$url' with curl.\n";
+      system($self->{curl}, @opts, $url) == 0 or die "can`t download '$url' with curl.\n";
       $fname
     };
   }
@@ -172,7 +172,7 @@ sub init_tools
     $self->{extract} = sub {
       my ($fname, $out_dir) = @_;
       my @opts = ('-x', '-f', $fname, '-C', $out_dir);
-      system($cmd, @opts) == 0 or die "can`t extract '$fname' with tar.\n"
+      system($self->{tar}, @opts) == 0 or die "can`t extract '$fname' with tar.\n"
     };
   }
   else{

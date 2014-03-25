@@ -69,10 +69,10 @@ sub get_and_install_dist
   my ($fname, $dir) = map catfile($temp_dir, $_), ($1, $2);
 
   ## download package ##
-  !-f $fname && $bt->download($url, $temp_dir);
+  !-f $fname && $bt->download($url, $fname);
 
   ## extract package ##
-  !-d $dir   && $bt->extract($fname);
+  !-d $dir   && $bt->extract($fname, $temp_dir);
 
   ## install package ##
   my $cd = cwd();
