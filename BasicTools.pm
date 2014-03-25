@@ -97,6 +97,14 @@ sub extract
   $self->{extract}($fname, $dir);  
 }
 
+# $bt->make(@args)
+sub make
+{
+  my $self = shift;
+  $self->has_make || die "make command is not set.\n";
+  system($self->{make}, @args) == 0 || die "make faild\n";
+}
+
 # my $full_path = $bt->which($cmd);
 sub which
 {
