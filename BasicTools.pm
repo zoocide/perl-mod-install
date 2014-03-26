@@ -78,6 +78,8 @@ sub new
     get_http => sub { die "http client is not set. Please, download '$_[0]' manually.\n" },
     ## extract($file, $out_dir);
     extract  => sub { die "Archiver is not set. Please, extract archive '$_[0]' manually.\n" },
+    ## extract($file, $out_dir);
+    extract_zip => sub { die "Unzip is not set. Please, extract archive '$_[0]' manually.\n" },
   }, $class;
 }
 
@@ -95,6 +97,14 @@ sub extract
   my ($self, $fname, $dir) = @_;
   $dir ||= '.';
   $self->{extract}($fname, $dir);  
+}
+
+# $bt->extract_zip($fname, $out_dir?);
+sub extract_zip
+{
+  my ($self, $fname, $dir) = @_;
+  $dir ||= '.';
+  $self->{extract_zip}($fname, $dir);
 }
 
 # $bt->make(@args)
@@ -166,7 +176,7 @@ sub init_tools
     }
   }
 
-  ## detect archiver ##
+  ## detect archiver (.tar.gz) ##
   if ($cmd = $self->which('tar')){
     $self->{tar} = $cmd;
     $self->{extract} = sub {
@@ -181,6 +191,13 @@ sub init_tools
     if (!$@){
       $self->{extract} = \&extract_Archive_Extract;
     }
+  }
+
+  ## detect archiver (.zip) ##
+  ## try Archive::Extract ##
+  eval{ require Archive::Extract };
+  if (!$@){
+    $self->{extract_zip} = \&extract_Archive_Extract;
   }
 
   ## detect make ##
