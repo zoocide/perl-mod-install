@@ -226,8 +226,13 @@ sub get_dmake
   my $url = 'http://search.cpan.org/CPAN/authors/id/S/SH/SHAY/dmake-4.12-20090907-SHAY.zip';
   my $fname = 'dmake.zip';
   $dir ||= '.';
-  $fname = $self->download($url, catfile($dir, $fname));
-  $self->extract($fname, $dir);
+  $fname = catfile($dir, $fname);
+  my $full_path = rel2abs(catfile($dir, 'dmake', 'dmake.exe'));
+
+  unless (-e $full_path){
+    -e $fname || $self->download($url, $fname);
+    $self->extract_zip($fname, $dir);
+  }
   $self->set_path(rel2abs(catfile($dir, 'dmake')), path());
   $self->{make} = $self->which('dmake') || die "can`t find dmake in path.\n";
 }
