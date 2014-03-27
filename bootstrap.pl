@@ -25,16 +25,16 @@ my $temp_dir    = 'bootstrap_temp';
 require my_lib;
 my_lib->import($install_dir);
 
+## create $temp_dir ##
+mkdir $temp_dir;
+
 ## initialize BasicTools ##
 my $bt = BasicTools->new;
 $bt->init_tools;
-$bt->has_make || !windoze || $bt->get_dmake($install_dir);
+$bt->has_make || !windoze || $bt->get_dmake($temp_dir);
 
 #sub my_system{ print join( ' ', @_, "\n"); 0 }
 sub my_system{ system @_ }
-
-## create $temp_dir ##
-mkdir $temp_dir;
 
 ## install ExtUtils::MakeMaker ##
 eval{ require ExtUtils::MakeMaker };
