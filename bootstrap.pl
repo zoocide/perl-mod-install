@@ -2,7 +2,7 @@
 use strict;
 use Cwd;
 use Config;
-use File::Spec::Functions qw(rel2abs catfile);
+use File::Spec::Functions qw(rel2abs catfile catdir splitdir splitpath);
 use BasicTools;
 use constant windoze => $^O eq 'MSWin32';
 
@@ -20,13 +20,14 @@ my $perl = $^X;
 my $install_dir = $ARGV[0] ? rel2abs($ARGV[0]) : '';
 my $prefix      = $install_dir ? 'PREFIX='.$install_dir : '';
 my $temp_dir    = 'bootstrap_temp';
+$temp_dir = catfile($install_dir, $temp_dir) if $install_dir;
 
 ## set environment variables ##
 require my_lib;
 my_lib->import($install_dir);
 
 ## create $temp_dir ##
-mkdir $temp_dir;
+mkdir_p($temp_dir);
 
 ## initialize BasicTools ##
 my $bt = BasicTools->new;
@@ -100,4 +101,27 @@ sub install_with_cpanm
   my $module = shift;
   system('cpanm', '-l', $install_dir, $module) && die "## installation $module failed ##\n";
   print "## $module successfully installed ## \n";
+}
+
+sub mkdir_p
+{
+  my $path = shift;
+  my ($vol, $dirs, $file) = splitpath($path);
+  my @dirs = (splitdir($dirs), $file);
+  my $result = $vol;
+
+  ## find missing directory ##
+  while(@dirs){
+    my $d = catfile($result, $dirs[0]);
+    last unless -d $d;
+    $result = $d;
+    shift @dirs;
+  }
+
+  ## create missing direcotries ##
+  while(@dirs){
+    $result = catfile($result, shift @dirs);
+    -d $result || mkdir $result or die "can`t create directory '$result': $!\n",
+                                       "Creating '$path' failed\n";
+  }
 }
