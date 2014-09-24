@@ -39,7 +39,7 @@ sub my_system{ system @_ }
 
 ## install ExtUtils::MakeMaker ##
 eval{ require ExtUtils::MakeMaker };
-$@ && get_and_install_dist('http://search.cpan.org/CPAN/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-6.92.tar.gz');
+$@ && get_and_install_dist('http://search.cpan.org/CPAN/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-6.98.tar.gz');
 
 ## install ExtUtils::Manifest ##
 eval{ require ExtUtils::Manifest };
