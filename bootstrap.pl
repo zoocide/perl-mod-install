@@ -47,7 +47,7 @@ $@ && get_and_install_dist('http://search.cpan.org/CPAN/authors/id/F/FL/FLORA/Ex
 
 ## install Module::CoreList ##
 eval{ require Module::CoreList };
-$@ && get_and_install_dist('http://search.cpan.org/CPAN/authors/id/B/BI/BINGOS/Module-CoreList-3.07.tar.gz');
+$@ && get_and_install_dist('http://search.cpan.org/CPAN/authors/id/B/BI/BINGOS/Module-CoreList-3.11.tar.gz');
 
 ## install cpanminus ##
 eval{ require App::cpanminus };
